@@ -16,7 +16,7 @@ class MinHeap {
                 if (!op_parent.has_value()) {
                     return;
                 }
-                if (op_parent.value() > container[i]) {
+                if (!comp_func(op_parent.value(), container[i])) {
                     swap(i, (i - 1) / 2);
                     i = (i - 1) / 2;
                 } else {
@@ -34,11 +34,11 @@ class MinHeap {
                 } else {
                     T min_child = op_left.value();
                     if (op_right.has_value()) {
-                        if (op_right.value() < min_child) {
+                        if (comp_func(op_right.value(), min_child)) {
                             min_child = op_right.value();
                         }
                     }
-                    if (min_child < container[i]) {
+                    if (comp_func(min_child, container[i])) {
                         if (min_child == op_left.value()) {
                             swap(i, 2 * i + 1);
                             i = 2 * i + 1;
@@ -113,7 +113,7 @@ class MinHeap {
             container[i] = new_elem;
             elem_to_index.erase(old_elem);
             elem_to_index.insert(new_elem, i);
-            if (new_elem > old_elem) {
+            if (!comp_func(new_elem, old_elem)) {
                 bubble_up(i);
             } else {
                 sink_down(i);
